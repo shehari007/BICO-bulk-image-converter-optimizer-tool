@@ -1,7 +1,9 @@
 .App {
   text-align: center;
 }
-
+:where(.css-dev-only-do-not-override-1vr7spz).ant-form-item{
+  margin-bottom: 0px !important;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;

@@ -11,10 +11,13 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "antd": "^5.9.2",
+    "im-resize": "^2.3.2",
     "image-conversion": "^2.1.1",
+    "jszip": "^3.10.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
+    "sharp": "^0.32.6",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
