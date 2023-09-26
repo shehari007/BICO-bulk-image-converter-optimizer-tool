@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './App.css';
 import Conversion from './Components/ConversionModule/Conversion';
 import { Layout } from 'antd';
-import {  Form, Input, Select } from 'antd';
+import { Form, Input, Select } from 'antd';
 const { Footer, Sider, Content } = Layout;
 
 function App() {
@@ -15,15 +15,17 @@ function App() {
     orientation: null,
   });
 
+
   const handleInputChange = (name, value) => {
     setFormData({
       ...formData,
       [name]: value,
     });
-    
+
   };
 
   const [form] = Form.useForm();
+
   return (
 
     <Layout hasSider>
@@ -40,23 +42,19 @@ function App() {
           bottom: 0,
         }}
       >
-        <div className="demo-logo-vertical" align="center" ><img style={{ marginBottom: '10px', marginTop: '20px' }} align="center" src='logo192.png' height={80} width={90} alt='logo' /></div>
+        <div className="demo-logo-vertical" align="center" >
+          <img style={{ marginBottom: '10px', marginTop: '20px' }} align="center" src='logo192.png' height={80} width={90} alt='logo' />
+        </div>
         <div style={{ maxHeight: '10%' }} >
           <Form
             style={{ marginLeft: '15px', marginRight: '15px' }}
             layout="vertical"
             form={form}
           >
-            <Form.Item label="Set Quality:">
-              <Input placeholder="0 - 100"
-              value={formData.quality}
-              type='number'
-              onChange={(e) => handleInputChange("quality", e.target.value)} />
-            </Form.Item>
             <Form.Item label="Set Type:">
               <Select
                 defaultValue="jpg"
-              onChange={(e) => handleInputChange("type", e)}
+                onChange={(e) => handleInputChange("type", e)}
                 options={[
                   {
                     value: 'jpg',
@@ -73,41 +71,79 @@ function App() {
                   {
                     value: 'webp',
                     label: 'webp',
+                  },
+                  {
+                    value: 'tiff',
+                    label: 'tiff',
                   }
                 ]}
               />
             </Form.Item>
+            {formData.type === 'png' ?
+              <Form.Item label="Set PNG Compression LVL:">
+                <Input placeholder="0 - 9"
+                  value={formData.quality}
+                  type='number'
+                  onInput={(e) => {
+                    const value = parseInt(e.target.value);
+                    if (isNaN(value) || value < 0 || value > 9) {
+                      e.preventDefault();
+                      return;
+                    }
+                    handleInputChange("quality", value);
+                  }} />
+              </Form.Item>
+              :
+              <Form.Item label="Set Quality:">
+                <Input placeholder="0 - 100"
+                  value={formData.quality}
+                  type='number'
+                  max={100}
+                  onInput={(e) => {
+                    const value = parseInt(e.target.value);
+                    if (isNaN(value) || value < 0 || value > 100) {
+                      e.preventDefault();
+                      return;
+                    }
+                    handleInputChange("quality", value);
+                  }} />
+              </Form.Item>
+            }
             <Form.Item label="Set Height:">
               <Input placeholder="input placeholder"
-              value={formData.height}
-              type='number'
-              onChange={(e) => handleInputChange("height", e.target.value)} />
+                value={formData.height}
+                type='number'
+                onChange={(e) => handleInputChange("height", e.target.value)} />
             </Form.Item>
             <Form.Item label="Set Width:">
               <Input placeholder="input placeholder"
-              value={formData.width}
-              type='number'
-              onChange={(e) => handleInputChange("width", e.target.value)} />
+                value={formData.width}
+                type='number'
+                onChange={(e) => handleInputChange("width", e.target.value)} />
             </Form.Item>
             <Form.Item label="Set Orientation:">
-            <Select
-                defaultValue="0°"
-                
-              onChange={(e) => handleInputChange("orientation", e)}
+              <Select
+                defaultValue="Original"
+
+                onChange={(e) => handleInputChange("orientation", e)}
                 options={[
+                  {
+                    value: 0,
+                    label: 'Original',
+                  },
                   {
                     value: 90,
                     label: '90°',
                   },
                   {
                     value: 180,
-                    label: '180', 
+                    label: '180°',
                   },
                   {
                     value: 360,
                     label: '360°',
                   },
-                 
+
                 ]}
               />
             </Form.Item>
@@ -122,21 +158,15 @@ function App() {
 
         }}
       >
-        {/* <Header
-       style={{
-         position: 'fixed',
-         padding: 0,
-         background: 'black',
-       }}
-     /> */}
         <Content
           style={{
             margin: '24px 16px 0',
             overflow: 'initial',
-            justifyContent: 'center',
+            //justifyContent: 'center',
 
           }}
-        ><div >
+        >
+          <div>
             <Conversion data={formData} />
           </div>
         </Content>
@@ -146,7 +176,7 @@ function App() {
             textAlign: 'center',
           }}
         >
-          v0.1.8 SYSPeek - System Information Viewer {new Date().getFullYear()} Made With ❤ By Muhammad Sheharyar Butt
+          v0.1.0 BICO - Bulk Image Converter & Optimizer {new Date().getFullYear()} Made With ❤ By Muhammad Sheharyar Butt
         </Footer>
       </Layout>
     </Layout>

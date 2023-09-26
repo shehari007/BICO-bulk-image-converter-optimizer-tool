@@ -7,7 +7,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 .custom-sider{
-  min-width:300px !important;
+  /* min-width:300px !important; */
   width: 300px;
 }
 code {
