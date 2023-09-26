@@ -44,13 +44,13 @@ Tool for converting bulk images supporting all image format and allow user to ad
 Clone the project
 
 ```bash
-git clone https://github.com/shehari007/SysPeek-hwinfo-react-electron-app.git
+git clone https://github.com/shehari007/BICO-bulk-image-converter-optimizer-tool.git
 ```
 
 Go to the project directory
 
 ```bash
-cd mini-react-electron-desktop-app
+cd BICO-bulk-image-converter-optimizer-tool
 ```
 
 Install dependencies
