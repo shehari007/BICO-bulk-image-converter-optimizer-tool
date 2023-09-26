@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Button, message, Table, Tag, Card, Alert } from 'antd';
+import { Button, message, Table, Tag, Card } from 'antd';
+import Alerts from '../Alerts/Alerts';
 import { UploadOutlined } from '@ant-design/icons'
 import JSZip from 'jszip';
 const sharp = window.require('sharp');
@@ -63,10 +64,11 @@ const Conversion = ({ data }) => {
                     jpg: { quality: parseInt(data.quality) },
                     webp: { quality: parseInt(data.quality) },
                     tiff: { quality: parseInt(data.quality), force: true },
-                    png: { compressionLevel: 9, force: true },
+                    png: { compressionLevel: parseInt(data.compression), force: true },
+                    gif: { force: true }
                 }
                 const qualityConfig = config[data.type || 'jpg'];
-                const pipeline = sharp(fileBuffer)
+                const pipeline = sharp(fileBuffer, { animated: data.animate })
 
                     .resize(data.height || data.width ? { width: parseInt(data.width), height: parseInt(data.height), fit: 'fill' } : undefined)
                     .toFormat(data.type || 'jpg', qualityConfig)
@@ -75,7 +77,9 @@ const Conversion = ({ data }) => {
 
                 const processedImageBuffer = await pipeline.toBuffer();
                 //  console.log(await sharp(processedImageBuffer).metadata())
-                processedImages.push({ name: file.name + '.' + data.type, buffer: processedImageBuffer });
+                const fileNameParts = file.name.split('.');
+                const fileNameWithoutExtension = fileNameParts[0];
+                processedImages.push({ name: fileNameWithoutExtension + '.' + data.type, buffer: processedImageBuffer });
 
                 setStatus(prevStatus => {
                     const updatedStatus = [...prevStatus];
@@ -117,14 +121,9 @@ const Conversion = ({ data }) => {
 
     return (
         <>
-        <Card>
-            <Alert
-                message="Informational Notes"
-                description={<><p><b>About JPG: </b>Select appropriate quality level when converting to jpg it defines the final quality & size of pictures. <b>Default is 80%</b></p>
-                <p><b>About PNG: </b>Select appropriate Compression level when converting to PNG it defines the final quality & size of pictures. <b>Default is 8</b> ~Lower is better</p></>}
-                type="info"
-                showIcon
-            /></Card>
+            <Card>
+                <Alerts />
+            </Card>
             <Card
                 title={`Total Files to be Converted: ` + fileList.length}
                 bordered={true}

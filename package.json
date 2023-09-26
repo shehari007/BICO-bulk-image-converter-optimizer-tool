@@ -44,7 +44,8 @@
       "target": "dmg"
     },
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "icon": "public/logo.png"
     },
     "nsis": {
       "allowToChangeInstallationDirectory": true,
