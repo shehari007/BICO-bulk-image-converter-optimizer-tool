@@ -8,7 +8,9 @@ const sharp = window.require('sharp');
 const Conversion = ({ data }) => {
     const [fileList, setFileList] = useState([]);
     const [uploading, setUploading] = useState(false);
+    const [btndisabled, setbtndisabled] = useState(false);
     const [status, setStatus] = useState([]);
+
     const columns = [
         {
             title: '#.',
@@ -55,7 +57,8 @@ const Conversion = ({ data }) => {
 
         try {
             const processedImages = [];
-            setUploading(true)
+            setUploading(true);
+            setbtndisabled(true);
             for (let i = 0; i < fileList.length; i++) {
                 const file = fileList[i];
                 const fileBuffer = await file.arrayBuffer();
@@ -114,7 +117,11 @@ const Conversion = ({ data }) => {
             setUploading(false);
         }
     }
-
+    const clearList = () => {
+        setFileList(()=>[]);
+        setUploading(false);
+        setbtndisabled(false);
+    }
     const scroll = {
         y: 250,
     };
@@ -132,6 +139,7 @@ const Conversion = ({ data }) => {
                         style={{ marginRight: '8px' }}
                         type='primary'
                         icon={<UploadOutlined />}
+                        disabled={btndisabled}
                         onClick={() => {
                             const input = document.getElementById('fileInput')
                             input.click();
@@ -142,14 +150,22 @@ const Conversion = ({ data }) => {
                     <Button
                         type="primary"
                         onClick={view}
-
+                        style={{ marginRight: '8px' }}
                         disabled={fileList.length === 0}
                         loading={uploading}
-                        style={{
-                            marginTop: 16,
-                        }}
+                        
                     >
                         {uploading ? 'Converting' : 'Start Converting'}
+                    </Button>
+                    <Button
+                        type="primary"
+                        danger
+                        style={{ marginRight: '8px' }}
+                        onClick={clearList}
+                        disabled={fileList.length === 0 ? true : btndisabled}
+                        
+                    >
+                        Clear List
                     </Button>
                 </>}
                 // align="center"
