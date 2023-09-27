@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, message, Table, Tag, Card } from 'antd';
+import { Button, message, Table, Tag, Card, Progress  } from 'antd';
 import Alerts from '../Alerts/Alerts';
 import { UploadOutlined } from '@ant-design/icons'
 import JSZip from 'jszip';
@@ -8,8 +8,10 @@ const sharp = window.require('sharp');
 const Conversion = ({ data }) => {
     const [fileList, setFileList] = useState([]);
     const [uploading, setUploading] = useState(false);
+    const [loading, setloading] = useState(false);
     const [btndisabled, setbtndisabled] = useState(false);
     const [status, setStatus] = useState([]);
+    const [counPerc, setCountPerc] = useState(0);
 
     const columns = [
         {
@@ -34,21 +36,41 @@ const Conversion = ({ data }) => {
             title: 'Status',
             key: '3',
             render: (_, record, index) => {
-                const currentStatus = status[index]; // Get the status corresponding to the current row
+                const currentStatus = status[index];
                 return currentStatus === 'Completed' ? (
                     <Tag color='green'>{currentStatus}</Tag>
                 ) : (
                     <Tag color='volcano'>Pending</Tag>
                 );
             },
-        }
+        },
+        {
+            title: 'Actions',
+            dataIndex: 'type',
+            key: '5',
+            render: (_,record, index) => {
+                const currIndex = index
+                return ( 
+                    <Button disabled={btndisabled} type='primary' danger onClick={()=>removeFileByIndex(currIndex)} >Remove</Button>
+                )
+            }
+        },
     ];
 
-    const handleFileChange = (e) => {
-        const selectedFiles = Array.from(e.target.files);
-        setFileList(selectedFiles)
-    };
+    const removeFileByIndex = (indexToRemove) => {
+        const updatedFileList = [...fileList];
+        updatedFileList.splice(indexToRemove, 1);
+        setFileList(updatedFileList);
+      };
 
+    const handleFileChange = (e) => {
+        setStatus([]);
+        setloading(false);
+        const selectedFiles = Array.from(e.target.files);
+        setFileList(selectedFiles);
+        e.target.value = null;
+    };
+  
     async function view() {
         if (fileList.length === 0) {
             message.error('Please select one or more files to convert.');
@@ -58,6 +80,8 @@ const Conversion = ({ data }) => {
         try {
             const processedImages = [];
             setUploading(true);
+            setStatus([]);
+            setloading(true)
             setbtndisabled(true);
             for (let i = 0; i < fileList.length; i++) {
                 const file = fileList[i];
@@ -89,7 +113,11 @@ const Conversion = ({ data }) => {
                     updatedStatus[i] = 'Completed';
                     return updatedStatus;
                 });
-
+                
+                setCountPerc((prevCountPerc) => {
+                    const updatedCountPerc = i === fileList.length - 1 ? 100 : Math.floor((i / fileList.length) * 100);
+                  return updatedCountPerc
+                });
                 // await new Promise(resolve => setTimeout(resolve, 1000)); // For Debugging Adjust the delay time as needed
             }
             const zip = new JSZip();
@@ -110,6 +138,7 @@ const Conversion = ({ data }) => {
             document.body.removeChild(downloadLink);
 
             setUploading(false);
+            setbtndisabled(false);
             message.success('Images converted and zipped successfully.');
         } catch (error) {
             console.error(error);
@@ -118,12 +147,15 @@ const Conversion = ({ data }) => {
         }
     }
     const clearList = () => {
-        setFileList(()=>[]);
+        setFileList([]);
+        setCountPerc(()=> 0)
+        setloading(false);
         setUploading(false);
         setbtndisabled(false);
+        setStatus([])
     }
     const scroll = {
-        y: 250,
+        y: 300,
     };
 
     return (
@@ -132,7 +164,7 @@ const Conversion = ({ data }) => {
                 <Alerts />
             </Card>
             <Card
-                title={`Total Files to be Converted: ` + fileList.length}
+              title={`Total Files: ` + fileList.length}
                 bordered={true}
                 extra={<>
                     <Button
@@ -168,13 +200,13 @@ const Conversion = ({ data }) => {
                         Clear List
                     </Button>
                 </>}
-                // align="center"
                 style={{
                     width: '100%',
-                    // marginLeft: '20%',
-                    //marginTop: '5%',
                 }}
             >
+                <div>
+                {loading ? <Progress style={{maxWidth: '50%'}} percent={counPerc} />: null}
+                </div>
                 <Table bordered columns={columns} pagination={false} scroll={scroll} dataSource={fileList} />
             </Card>
             <div align="center" style={{ marginLeft: '10%' }}>
