@@ -51,7 +51,7 @@ const Conversion = ({ data }) => {
             render: (_,record, index) => {
                 const currIndex = index
                 return ( 
-                    <Button disabled={btndisabled} type='primary' danger onClick={()=>removeFileByIndex(currIndex)} >Remove</Button>
+                    <Button disabled={btndisabled} type='primary' id="remove-btn" danger onClick={()=>removeFileByIndex(currIndex)} >Remove</Button>
                 )
             }
         },
