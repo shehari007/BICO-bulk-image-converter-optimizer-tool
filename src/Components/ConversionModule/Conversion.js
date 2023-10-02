@@ -92,7 +92,8 @@ const Conversion = ({ data }) => {
                     webp: { quality: parseInt(data.quality) },
                     tiff: { quality: parseInt(data.quality), force: true },
                     png: { compressionLevel: parseInt(data.compression), force: true },
-                    gif: { force: true }
+                    gif: { force: true },
+                    avif: { force: true, quality: parseInt(data.quality), lossless: data.losscomp}
                 }
                 const qualityConfig = config[data.type || 'jpg'];
                 const pipeline = sharp(fileBuffer, { animated: data.animate })
@@ -100,6 +101,7 @@ const Conversion = ({ data }) => {
                     .resize(data.height || data.width ? { width: parseInt(data.width), height: parseInt(data.height), fit: 'fill' } : undefined)
                     .toFormat(data.type || 'jpg', qualityConfig)
                     .rotate(data.orientation)
+                    .greyscale(data.grayscale)
 
 
                 const processedImageBuffer = await pipeline.toBuffer();

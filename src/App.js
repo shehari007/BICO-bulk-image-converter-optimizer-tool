@@ -17,6 +17,8 @@ function App() {
     height: 500,
     orientation: null,
     animate: false,
+    grayscale: false,
+    losscomp: false
   });
 
   const handleLinkClick = (type) => { 
@@ -83,6 +85,10 @@ function App() {
                   {
                     value: 'tiff',
                     label: 'tiff',
+                  },
+                  {
+                    value: 'avif',
+                    label: 'avif',
                   }
                 ]}
               />
@@ -90,6 +96,14 @@ function App() {
             {formData.type === 'gif' ?
               <Form.Item label="Set Animation:">
                 <Radio.Group name="radiogroup" onChange={e => handleInputChange('animate', e.target.value)} defaultValue={formData.animate}>
+                  <Radio value={true}>On</Radio>
+                  <Radio value={false}>Off</Radio>
+                </Radio.Group>
+
+              </Form.Item> : null}
+              {formData.type === 'avif' ?
+              <Form.Item label="Lossless Compression:">
+                <Radio.Group name="radiogroup" onChange={e => handleInputChange('losscomp', e.target.value)} defaultValue={formData.losscomp}>
                   <Radio value={true}>On</Radio>
                   <Radio value={false}>Off</Radio>
                 </Radio.Group>
@@ -164,6 +178,24 @@ function App() {
                 ]}
               />
             </Form.Item>
+            <Form.Item label="Set Grayscale:">
+              <Select
+                defaultValue="Keep Original"
+
+                onChange={(e) => handleInputChange("grayscale", e)}
+                options={[
+                  {
+                    value: false,
+                    label: 'Keep Original',
+                  },
+                  {
+                    value: true,
+                    label: 'Grayscale On',
+                  },
+                
+                ]}
+              />
+            </Form.Item>
           </Form>
         </div>
       </Sider>
@@ -193,7 +225,7 @@ function App() {
             textAlign: 'center',
           }}
         >
-          v0.1.0 BICO - Bulk Image Converter & Optimizer {new Date().getFullYear()} Made With ❤ By <a href='##' onClick={handleLinkClick}>Muhammad Sheharyar Butt</a>
+          v0.1.5 BICO - Bulk Image Converter & Optimizer {new Date().getFullYear()} Made With ❤ By <a href='##' onClick={handleLinkClick}>Muhammad Sheharyar Butt</a>
         </Footer>
       </Layout>
     </Layout>
