@@ -16,14 +16,13 @@
 
 # BICO - Bulk Image Converter & Optimizer Tool For Desktop Platform Based on React Electron
 
-## Current Version (v0.1.5) Last Updated (02/10/2023)
+## Current Version (v1.5.0) Last Updated (18/02/2024)
 
-Tool for converting bulk images supporting all image format and allow user to adjust dimensions, quality, animation, compression and many more options to discover. 
+Tool for converting bulk images supporting all image format and allow user to adjust dimensions, quality, animation, compression and many more options to discover. - (you can find latest changelog at release section)
 
 ## Tech Stack
 
-**CLIENT:** React, Hooks, Ant Design 5+, Electron, Node
-
+Ant Design 5+, Electron, Node SHARP
 
 
 ## Features
@@ -31,11 +30,16 @@ Tool for converting bulk images supporting all image format and allow user to ad
 - Supports all various image formats (webp, jpg, png, tiff, jp2, heif, avif, jxl, raw, gif).
 - Single form settings to select options for desired output.
 - Uses Multi Threaded Task for quick compression and output for larger files.
-- Generates a single Zip file of all converted images.
-- Added Grayscale image conversion support (02/10/2023)
-- Added avif with losseless compression support (02/10/2023)
+- Generates a single output zip file. 
+- Added Grayscale image conversion support
+- Added avif with losseless compression support
 - Supports Hardware acceleration.
-- Shows a Table of selected files in an organized way.
+- Added MozJPEG support - (Updated)
+- Added Progressive Interlaced Scan Support for (JPEG, PNG, GIF) - (Updated)
+- Added Custom Dimension Option - (Updated)
+- Added Webp Lossless Compression - (Updated)
+- Added Tiff compression types (jpeg, deflate, packbits, lzw, webp, jp2k) - (Updated)
+- Added Windows Notifications Tested on Windows 11 - (Updated)
 
 
 ## Pre Requirements For Local Development
@@ -43,6 +47,7 @@ Tool for converting bulk images supporting all image format and allow user to ad
 - React 18+
 - Node, NPM
 - VSCODE With ES6+ Module
+
 ## Installation
 
 Clone the project

@@ -4,6 +4,8 @@ const Alerts = () => {
     return (
         <><Alert
             message="Informational Notes"
+            closable
+            closeIcon
             description={<>
                 <ul>
                     <li><b>About JPG: </b>Select appropriate quality level when converting to jpg it defines the final quality & size of pictures. <b>Default is 80%</b>  ~Higher is better

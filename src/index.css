@@ -6,9 +6,13 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-.custom-sider{
-  /* min-width:300px !important; */
-  width: 300px;
+.custom-sider {
+  min-width: 250px !important;
+  width: 250px;
+
+}
+.ant-form-item-label {
+  font-weight: bold;
 }
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',

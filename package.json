@@ -1,6 +1,6 @@
 {
   "name": "bico-bulk-image-converter-optimizer-tool",
-  "version": "0.1.5",
+  "version": "1.5.0",
   "author": "Muhammad Sheharyar Butt",
   "description": "Bulk image converter tool",
   "private": true,
@@ -14,10 +14,12 @@
     "im-resize": "^2.3.2",
     "image-conversion": "^2.1.1",
     "jszip": "^3.10.1",
+    "node-addon-api": "^7.1.0",
+    "node-gyp": "^10.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
-    "sharp": "^0.32.6",
+    "sharp": "^0.33.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -31,8 +33,8 @@
     "electron:package:linux": "npm run build && electron-builder -l -c.extraMetadata.main=build/electron.js"
   },
   "build": {
-    "appId": "com.electron.bico",
-    "productName": "BICO-image Converter Tool",
+    "appId": "BICO-Bulk Image Converter Tool",
+    "productName": "BICO-Bulk Image Converter Tool",
     "files": [
       "build/**/*",
       "node_modules/**/*"
