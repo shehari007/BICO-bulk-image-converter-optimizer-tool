@@ -1,7 +1,10 @@
 {
   "name": "bico-bulk-image-converter-optimizer-tool",
   "version": "1.5.0",
-  "author": "Muhammad Sheharyar Butt",
+  "author": {
+    "name": "Muhammad Sheharyar Butt",
+    "email": "shehariyar@gmail.com"
+  },
   "description": "Bulk image converter tool",
   "private": true,
   "main": "./public/electron.js",
@@ -55,7 +58,8 @@
     },
     "linux": {
       "target": "deb",
-      "icon": "public/logo.png"
+      "icon": "public/logo.png",
+      "category": "Utility"
     }
   },
   "eslintConfig": {
@@ -82,7 +86,7 @@
     "concurrently": "^8.2.1",
     "cross-env": "^7.0.3",
     "electron": "^26.2.1",
-    "electron-builder": "^24.6.4",
+    "electron-builder": "^24.12.0",
     "electronmon": "^2.0.2",
     "wait-on": "^7.0.1"
   }
