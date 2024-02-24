@@ -34,12 +34,12 @@ Ant Design 5+, Electron, Node SHARP
 - Added Grayscale image conversion support
 - Added avif with losseless compression support
 - Supports Hardware acceleration.
-- Added MozJPEG support - (Updated)
-- Added Progressive Interlaced Scan Support for (JPEG, PNG, GIF) - (Updated)
-- Added Custom Dimension Option - (Updated)
-- Added Webp Lossless Compression - (Updated)
-- Added Tiff compression types (jpeg, deflate, packbits, lzw, webp, jp2k) - (Updated)
-- Added Windows Notifications Tested on Windows 11 - (Updated)
+- Added MozJPEG support
+- Added Progressive Interlaced Scan Support for (JPEG, PNG, GIF)
+- Added Custom Dimension Option
+- Added Webp Lossless Compression
+- Added Tiff compression types (jpeg, deflate, packbits, lzw, webp, jp2k)
+- Added Windows Notifications Tested on Windows 11
 
 
 ## Pre Requirements For Local Development
