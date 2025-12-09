@@ -1,29 +1,28 @@
 {
   "name": "bico-bulk-image-converter-optimizer-tool",
-  "version": "1.5.0",
+  "version": "2.0.0",
   "author": {
     "name": "Muhammad Sheharyar Butt",
     "email": "shehariyar@gmail.com"
   },
-  "description": "Bulk image converter tool",
+  "description": "Professional bulk image converter and optimizer tool with advanced features",
   "private": true,
   "main": "./public/electron.js",
   "homepage": "./",
   "dependencies": {
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "antd": "^5.9.2",
-    "im-resize": "^2.3.2",
-    "image-conversion": "^2.1.1",
+    "@ant-design/icons": "^5.5.1",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
+    "@testing-library/user-event": "^14.5.2",
+    "antd": "^5.22.3",
     "jszip": "^3.10.1",
-    "node-addon-api": "^7.1.0",
-    "node-gyp": "^10.0.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "node-addon-api": "^8.2.2",
+    "node-gyp": "^10.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-scripts": "5.0.1",
-    "sharp": "^0.33.2",
-    "web-vitals": "^2.1.4"
+    "sharp": "^0.33.5",
+    "web-vitals": "^4.2.4"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -42,14 +41,27 @@
       "build/**/*",
       "node_modules/**/*"
     ],
+    "asarUnpack": [
+      "node_modules/sharp/**/*",
+      "node_modules/@img/**/*"
+    ],
     "directories": {
       "buildResources": "public"
     },
     "mac": {
-      "target": "dmg"
+      "target": "dmg",
+      "icon": "public/logo512.png"
     },
     "win": {
-      "target": "nsis",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
       "icon": "public/logo.png"
     },
     "nsis": {

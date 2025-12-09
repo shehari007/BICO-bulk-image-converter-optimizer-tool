@@ -14,11 +14,13 @@
 </div>
 
 
-# BICO - Bulk Image Converter & Optimizer Tool For Desktop Platform Based on React Electron
+# BICO - Bulk Image Converter & Optimizer (React + Electron)
 
-## Current Version (v1.5.0) Last Updated (18/02/2024)
+## Current Version
+- v2.0.0 (December 2025)
+- Windows builds ship as x64 and arm64; mac builds follow host arch automatically.
 
-Tool for converting bulk images supporting all image format and allow user to adjust dimensions, quality, animation, compression and many more options to discover. - (you can find latest changelog at release section)
+BICO is a pro-grade bulk image converter and optimizer. Convert, compress, and batch-export with previews, pause/resume, ZIP or folder output, and advanced Sharp-powered processing.
 
 ## Tech Stack
 
@@ -27,19 +29,23 @@ Ant Design 5+, Electron, Node SHARP
 
 ## Features
 
-- Supports all various image formats (webp, jpg, png, tiff, jp2, heif, avif, jxl, raw, gif).
-- Single form settings to select options for desired output.
-- Uses Multi Threaded Task for quick compression and output for larger files.
-- Generates a single output zip file. 
-- Added Grayscale image conversion support
-- Added avif with losseless compression support
-- Supports Hardware acceleration.
-- Added MozJPEG support
-- Added Progressive Interlaced Scan Support for (JPEG, PNG, GIF)
-- Added Custom Dimension Option
-- Added Webp Lossless Compression
-- Added Tiff compression types (jpeg, deflate, packbits, lzw, webp, jp2k)
-- Added Windows Notifications Tested on Windows 11
+- Broad format support: webp, jpg, png, tiff, jp2, heif, avif, jxl, raw, gif, bmp.
+- Dark, responsive UI with drag-and-drop, inline previews, file table, and estimated output sizes.
+- Dual outputs: ZIP archive or direct-to-folder with clickable path and open-folder action.
+- Conversion controls: confirmation modal, progress with pause/resume/stop, success summary with savings.
+- Quality & compression controls per format (JPEG/PNG/AVIF/WebP/GIF/TIFF) with presets.
+- Advanced options: resize, rotate/flip/flop, grayscale, sharpen, normalize, MozJPEG, progressive, lossless, metadata preservation.
+- Parallel processing and batch-safe Sharp pipeline for speed and stability.
+- Notifications and system-friendly Electron window sizing.
+
+## Changelog (2.0.0)
+
+- New UI/UX: fully restyled dark theme, responsive layout, padded headers, improved tables.
+- File handling: previews, drag & drop, duplicate detection, better status chips, estimated savings per file and total.
+- Controls: start confirmation modal, pause/resume, stop with partial-save note, clear list, clickable output folder.
+- Output: choice of ZIP or folder, success modal with processed/failed counts and space saved, clickable open-folder button.
+- Performance: parallel processing controller, estimated output size calculation, better progress reporting.
+- Platform: window opens centered (not forced fullscreen); Windows installers built for x64 and arm64; footer shows runtime arch.
 
 
 ## Pre Requirements For Local Development
@@ -81,6 +87,7 @@ Deployment is never been easy before, package.json is already configured for eve
 ```bash
 npm run electron:package:win
 ```
+> Produces NSIS installers for both x64 and arm64.
 ## For Linux
 ```bash
 npm run electron:package:linux
