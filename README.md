@@ -47,6 +47,27 @@ Ant Design 5+, Electron, Node SHARP
 - Performance: parallel processing controller, estimated output size calculation, better progress reporting.
 - Platform: window opens centered (not forced fullscreen); Windows installers built for x64 and arm64; footer shows runtime arch.
 
+## Screenshots
+
+<div align="center">
+  <img src="screenshots/1.png" alt="BICO Main Interface" width="80%">
+  <p><em>Main Interface - Clean dark theme with drag & drop support</em></p>
+</div>
+
+<div align="center">
+  <img src="screenshots/4.png" alt="BICO File Processing" width="80%">
+  <p><em>File Processing - Batch conversion with preview and progress</em></p>
+</div>
+
+<div align="center">
+  <img src="screenshots/2.png" alt="BICO Settings" width="80%">
+  <p><em>Settings - Advanced compression and format options</em></p>
+</div>
+
+<div align="center">
+  <img src="screenshots/3.png" alt="BICO Output" width="80%">
+  <p><em>Output - Conversion complete with savings summary</em></p>
+</div>
 
 ## Pre Requirements For Local Development
 
