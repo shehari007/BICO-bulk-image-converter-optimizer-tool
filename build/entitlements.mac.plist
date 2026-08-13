@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <!--
+      Electron runs JavaScript through a just in time compiler, which the
+      hardened runtime blocks unless these are granted. Without them the app
+      launches and then dies the moment V8 compiles anything.
+    -->
+    <key>com.apple.security.cs.allow-jit</key>
+    <true/>
+    <key>com.apple.security.cs.allow-unsigned-executable-memory</key>
+    <true/>
+    <!--
+      sharp loads its libvips binaries from inside the bundle at runtime, and
+      those are signed separately from the main executable.
+    -->
+    <key>com.apple.security.cs.disable-library-validation</key>
+    <true/>
+    <!-- Reading the images the user picks, and writing the converted copies. -->
+    <key>com.apple.security.files.user-selected.read-write</key>
+    <true/>
+  </dict>
+</plist>

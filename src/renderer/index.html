@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BICO</title>
+    <!--
+      The content security policy is injected by a plugin in
+      electron.vite.config.ts rather than written here, because the development
+      server needs a looser policy than the packaged build: the React refresh
+      preamble is an inline script and hot reload runs over a websocket.
+    -->
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,23 +1,40 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-node_modules
-/.pnp
+# Dependencies
+node_modules/
+.pnp
 .pnp.js
-/dist
-# testing
-/coverage
 
-# production
-/build
+# electron-vite build output
+out/
 
-# misc
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+# electron-builder installers
+dist/
 
+# Caches
+.eslintcache
+.vite/
+*.tsbuildinfo
+node_modules/.tmp/
+
+# Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+logs/
+*.log
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Editors and operating systems
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# Note: build/ is intentionally tracked. It holds the installer resources that
+# electron-builder reads, namely the application icons.

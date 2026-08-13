@@ -1,2 +1,15 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# Normalise line endings on commit, check out native endings on Windows.
+* text=auto eol=lf
+
+# Never touch these, a normalisation pass would corrupt them.
+*.png binary
+*.ico binary
+*.icns binary
+*.jpg binary
+*.webp binary
+*.avif binary
+
+# Keep generated lockfiles and bundles out of the diff view and the language
+# statistics, they are noise in a review.
+package-lock.json linguist-generated=true -diff
+out/** linguist-generated=true

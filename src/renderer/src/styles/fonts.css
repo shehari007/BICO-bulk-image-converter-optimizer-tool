@@ -1,0 +1,72 @@
+/*
+ * Typography.
+ *
+ * IBM Plex, self hosted. The app runs offline behind a content security policy
+ * that blocks every external host, so a webfont has to ship with the build, and
+ * falling back to the platform UI font meant the interface looked like a
+ * different product on each operating system.
+ *
+ * Plex was chosen over the usual candidates because its Arabic is a designed
+ * companion to the Latin rather than a substitute face borrowed from somewhere
+ * else. Switching the interface to Arabic therefore keeps the same voice, weight
+ * and rhythm instead of visibly changing typeface halfway through the product.
+ * Its Latin Extended coverage also carries the Turkish dotted and dotless i,
+ * the breve and the cedilla properly, which a Latin only subset would not.
+ *
+ * Licensed under the SIL Open Font License, which is compatible with shipping
+ * inside an MIT licensed application.
+ *
+ * Only the subsets and weights the interface actually uses are imported. The
+ * variable Latin face covers every weight in one file; the Arabic is static, so
+ * the four weights in use are named individually rather than pulling all nine.
+ */
+
+/*
+ * Latin and Latin Extended, one variable file covering every weight.
+ *
+ * This entry point also declares Cyrillic, Greek and Vietnamese faces. They cost
+ * nothing at runtime because each carries a unicode-range the interface never
+ * reaches, so the browser never requests them, and keeping the stock entry point
+ * is worth more than shaving a few hundred kilobytes off a folder nobody sees.
+ */
+@import '@fontsource-variable/ibm-plex-sans/wght.css';
+
+/* Arabic companion, static weights. */
+@import '@fontsource/ibm-plex-sans-arabic/arabic-400.css';
+@import '@fontsource/ibm-plex-sans-arabic/arabic-500.css';
+@import '@fontsource/ibm-plex-sans-arabic/arabic-600.css';
+@import '@fontsource/ibm-plex-sans-arabic/arabic-700.css';
+
+/* Monospace for byte counts, dimensions and the log tail. */
+@import '@fontsource/ibm-plex-mono/latin-400.css';
+@import '@fontsource/ibm-plex-mono/latin-500.css';
+
+:root {
+  /*
+   * The Arabic face is listed first so that Arabic codepoints resolve to it even
+   * while Latin ones fall to the Sans behind it. A browser walks the stack per
+   * character, so one stack serves every language without swapping at runtime.
+   */
+  --bico-font-sans:
+    'IBM Plex Sans Arabic', 'IBM Plex Sans Variable', 'IBM Plex Sans', -apple-system,
+    BlinkMacSystemFont, 'Segoe UI Variable Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+
+  --bico-font-mono:
+    'IBM Plex Mono', ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SF Mono', Menlo, Consolas,
+    monospace;
+}
+
+/*
+ * Tabular figures everywhere a number sits in a column.
+ *
+ * The queue, the statistics tiles and the status bar all show figures that
+ * change while you watch them. Proportional digits make those columns jitter as
+ * the values update, which reads as the layout being unstable.
+ */
+.bico-mono,
+.bico-stat-value,
+.ant-statistic-content,
+.ant-table-cell {
+  font-variant-numeric: tabular-nums;
+}

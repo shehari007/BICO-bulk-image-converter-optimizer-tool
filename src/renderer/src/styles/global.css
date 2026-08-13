@@ -1,0 +1,709 @@
+/*
+ * Only the things Ant Design tokens cannot express live here: the app frame,
+ * scrollbars, drag states and a few layout primitives. Everything colour
+ * related reads a custom property published by theme/tokens.ts, so switching
+ * theme never needs a stylesheet swap.
+ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--bico-font-sans);
+  background: var(--bico-canvas);
+  color: var(--bico-text);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Text selection inside a desktop chrome reads as a bug, so it is opt in. */
+  user-select: none;
+  cursor: default;
+}
+
+input,
+textarea,
+[contenteditable='true'],
+.bico-selectable {
+  user-select: text;
+  cursor: auto;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--bico-text-muted) 35%, transparent);
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--bico-text-muted) 60%, transparent);
+  background-clip: content-box;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--bico-accent) 35%, transparent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--bico-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ================================================================ */
+/* App frame                                                         */
+/* ================================================================ */
+
+.bico-shell {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.bico-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  overflow: hidden;
+}
+
+.bico-sidebar {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--bico-surface);
+  /* The seam faces the main area, which is the left edge once Arabic flips the
+     document, so this has to follow the writing direction rather than sit on a
+     fixed side of the window. */
+  border-inline-end: 1px solid var(--bico-border);
+  overflow: hidden;
+}
+
+.bico-sidebar-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 12px;
+  /* Contain scrolling so a wheel event at the end of the list does not start
+     scrolling the queue behind it. */
+  overscroll-behavior: contain;
+}
+
+.bico-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.bico-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 16px 0;
+  overflow: hidden;
+}
+
+.bico-queue {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--bico-border);
+  border-radius: 14px;
+  background: var(--bico-surface);
+}
+
+.bico-queue-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+}
+
+/* ================================================================ */
+/* Drop zone                                                         */
+/* ================================================================ */
+
+.bico-dropzone {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 16px;
+  padding: 32px 24px;
+  border: 2px dashed var(--bico-border);
+  border-radius: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    transform 160ms ease;
+}
+
+.bico-dropzone:hover {
+  border-color: color-mix(in srgb, var(--bico-accent) 60%, transparent);
+}
+
+.bico-dropzone.is-over {
+  border-color: var(--bico-accent);
+  background: color-mix(in srgb, var(--bico-accent) 8%, transparent);
+  transform: scale(1.005);
+}
+
+/* Covers the whole window while a drag is in progress, so a user aiming badly
+   still drops onto a valid target. */
+.bico-drop-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--bico-canvas) 82%, transparent);
+  backdrop-filter: blur(6px);
+  border: 3px dashed var(--bico-accent);
+  pointer-events: none;
+}
+
+/* ================================================================ */
+/* Stat strip                                                        */
+/* ================================================================ */
+
+.bico-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.bico-stat {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--bico-border);
+  border-radius: 12px;
+  background: var(--bico-surface);
+  min-width: 0;
+}
+
+.bico-stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 auto;
+  border-radius: 10px;
+  font-size: 18px;
+}
+
+.bico-stat-body {
+  min-width: 0;
+}
+
+.bico-stat-value {
+  font-size: 18px;
+  font-weight: 650;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bico-stat-label {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--bico-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ================================================================ */
+/* Status bar                                                        */
+/* ================================================================ */
+
+.bico-statusbar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 34px;
+  padding: 0 14px;
+  font-size: 12px;
+  color: var(--bico-text-secondary);
+  border-top: 1px solid var(--bico-border);
+  background: var(--bico-surface);
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  scrollbar-width: none;
+}
+
+.bico-statusbar::-webkit-scrollbar {
+  display: none;
+}
+
+.bico-statusbar-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+}
+
+.bico-statusbar-spacer {
+  flex: 1 1 auto;
+}
+
+.bico-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+
+/* ================================================================ */
+/* Queue grid view                                                   */
+/* ================================================================ */
+
+.bico-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+  gap: 12px;
+  padding: 14px;
+}
+
+.bico-card {
+  position: relative;
+  border: 1px solid var(--bico-border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--bico-surface-raised);
+  cursor: pointer;
+  transition:
+    border-color 140ms ease,
+    transform 140ms ease;
+}
+
+/*
+ * The lift alone was the only feedback here, and it is easy to miss on a grid
+ * of thumbnails where several tiles sit at different heights anyway. Warming
+ * the border towards the accent says which tile the pointer is actually on.
+ */
+.bico-card:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--bico-accent) 45%, var(--bico-border));
+}
+
+.bico-card.is-selected {
+  border-color: var(--bico-accent);
+  box-shadow: 0 0 0 1px var(--bico-accent);
+}
+
+.bico-card-thumb {
+  aspect-ratio: 4 / 3;
+  width: 100%;
+  object-fit: cover;
+  display: block;
+  background: var(--bico-surface-overlay);
+}
+
+.bico-card-meta {
+  padding: 8px 10px 10px;
+  min-width: 0;
+}
+
+.bico-card-name {
+  font-size: 12px;
+  font-weight: 550;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bico-card-sub {
+  font-size: 11px;
+  color: var(--bico-text-muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.bico-card-badge {
+  position: absolute;
+  inset-block-start: 6px;
+  inset-inline-end: 6px;
+}
+
+/* ================================================================ */
+/* Before and after comparison                                       */
+/* ================================================================ */
+
+.bico-compare {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+  background: repeating-conic-gradient(var(--bico-surface-overlay) 0% 25%, transparent 0% 50%) 50% /
+    20px 20px;
+  touch-action: none;
+}
+
+.bico-compare img {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+
+.bico-compare-after {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.bico-compare-after img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.bico-compare-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--bico-accent);
+  cursor: ew-resize;
+  transform: translateX(-1px);
+}
+
+.bico-compare-grip {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--bico-accent);
+  color: var(--bico-on-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 35%);
+}
+
+/* ================================================================ */
+/* About panel                                                       */
+/* ================================================================ */
+
+.bico-about-hero {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 22px 24px;
+  border-radius: 16px;
+  background:
+    radial-gradient(
+      120% 140% at 0% 0%,
+      color-mix(in srgb, var(--bico-accent) 22%, transparent),
+      transparent 60%
+    ),
+    var(--bico-surface-raised);
+  border: 1px solid var(--bico-border);
+}
+
+.bico-about-mark {
+  width: 68px;
+  height: 68px;
+  flex: 0 0 auto;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--bico-accent) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--bico-accent) 40%, transparent);
+}
+
+.bico-kv {
+  display: grid;
+  grid-template-columns: minmax(120px, max-content) 1fr;
+  gap: 6px 16px;
+  font-size: 13px;
+  align-items: baseline;
+}
+
+.bico-kv dt {
+  color: var(--bico-text-muted);
+  margin: 0;
+}
+
+.bico-kv dd {
+  margin: 0;
+  color: var(--bico-text);
+  overflow-wrap: anywhere;
+}
+
+/* ================================================================ */
+/* Utilities                                                         */
+/* ================================================================ */
+
+.bico-mono {
+  font-family: var(--bico-font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.bico-truncate {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bico-scroll-y {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.bico-section-title {
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bico-text-muted);
+  margin: 4px 2px 8px;
+}
+
+.bico-fade-in {
+  animation: bico-fade 220ms ease-out;
+}
+
+@keyframes bico-fade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ================================================================ */
+/* Responsive                                                        */
+/* ================================================================ */
+
+@media (max-width: 900px) {
+  .bico-content {
+    padding: 10px 10px 0;
+  }
+
+  .bico-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .bico-stats {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .bico-grid {
+    grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+  }
+}
+
+/* ================================================================ */
+/* Welcome screen                                                    */
+/* ================================================================ */
+
+.bico-welcome {
+  overflow: hidden;
+}
+
+/*
+ * The entrance is one transition per row, delayed by its index.
+ *
+ * A single container animation would slide the whole panel in as one slab,
+ * which reads as a page load. Staggering the rows makes the screen assemble
+ * itself, and because each row carries its own custom property the delay is
+ * data rather than a hand written keyframe per element.
+ */
+.bico-welcome-row,
+.bico-welcome-hero {
+  animation: bico-welcome-rise 420ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: calc(var(--i, 0) * 55ms);
+}
+
+@keyframes bico-welcome-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.bico-welcome-hero {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 20px 22px;
+  margin-bottom: 16px;
+  border-radius: 16px;
+  border: 1px solid var(--bico-border);
+  background:
+    radial-gradient(
+      130% 150% at 0% 0%,
+      color-mix(in srgb, var(--bico-accent) 24%, transparent),
+      transparent 62%
+    ),
+    var(--bico-surface-raised);
+}
+
+.bico-welcome-mark {
+  width: 72px;
+  height: 72px;
+  flex: 0 0 auto;
+  border-radius: 18px;
+  display: block;
+  /* A slow breath rather than a spin. The mark should feel alive without
+     asking to be looked at. */
+  animation: bico-welcome-breathe 4.5s ease-in-out infinite;
+}
+
+@keyframes bico-welcome-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 color-mix(in srgb, var(--bico-accent) 0%, transparent));
+  }
+  50% {
+    transform: scale(1.035);
+    filter: drop-shadow(0 6px 18px color-mix(in srgb, var(--bico-accent) 38%, transparent));
+  }
+}
+
+.bico-welcome-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.bico-welcome-fact {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--bico-border);
+  background: var(--bico-surface-raised);
+}
+
+.bico-welcome-fact-label {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--bico-text-muted);
+}
+
+.bico-welcome-fact-value {
+  font-size: 13px;
+  font-weight: 550;
+}
+
+.bico-welcome-list {
+  list-style: none;
+  margin: 0 0 18px;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.bico-welcome-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+}
+
+.bico-welcome-item-title {
+  font-weight: 600;
+  margin-bottom: 1px;
+}
+
+.bico-welcome-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-top: 14px;
+  border-top: 1px solid var(--bico-border);
+}
+
+/*
+ * Anyone who has asked the system to reduce motion gets the finished state
+ * immediately, including the looping mark, which is exactly the kind of
+ * animation that causes trouble.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .bico-welcome-row,
+  .bico-welcome-hero {
+    animation: none;
+  }
+
+  .bico-welcome-mark {
+    animation: none;
+  }
+}

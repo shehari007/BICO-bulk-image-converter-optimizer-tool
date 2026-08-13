@@ -1,0 +1,118 @@
+appId: com.shehari.bico
+productName: BICO
+copyright: Copyright (c) 2026 Muhammad Sheharyar Butt
+
+directories:
+  buildResources: build
+  output: dist
+
+files:
+  - out/**/*
+  - resources/**/*
+  - '!**/.vscode/*'
+  - '!src/*'
+  - '!screenshots/*'
+  - '!docs/*'
+  - '!electron.vite.config.{js,ts,mjs,cjs}'
+  - '!{.eslintcache,eslint.config.js,.prettierrc,.prettierignore,.editorconfig}'
+  - '!{.env,.env.*,.npmrc,pnpm-lock.yaml,package-lock.json}'
+  - '!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}'
+  - '!{CONTRIBUTING.md,CHANGELOG.md}'
+
+# sharp ships prebuilt native binaries that cannot be loaded from inside an asar
+# archive, so they are unpacked next to it at install time.
+asarUnpack:
+  - resources/**
+  - node_modules/sharp/**
+  - node_modules/@img/**
+  # The JPEG XL codec compiles its wasm from a file path. Reading that out of an
+  # asar archive works, but unpacking keeps it a plain file for the WebAssembly
+  # compiler and avoids a whole class of packaging surprise.
+  - node_modules/@jsquash/**
+  # Same for the JPEG 2000 codec, which reads a fourteen megabyte ImageMagick
+  # binary off disk. That one is also an ES module reached through a runtime
+  # import, so its own resolution has to work from an ordinary directory.
+  - node_modules/@imagemagick/**
+
+npmRebuild: false
+
+win:
+  executableName: BICO
+  icon: build/icon.ico
+  artifactName: ${productName}-${version}-${arch}-setup.${ext}
+  target:
+    - target: nsis
+      arch:
+        - x64
+        - arm64
+
+nsis:
+  # Deliberately the guid of the 2.x releases rather than one derived from the
+  # current appId.
+  #
+  # Windows keys its uninstall entry on a guid generated from appId, and appId
+  # changed with this release, so a machine that already had BICO would end up
+  # with two installations: two entries in Apps and Features, two Start Menu
+  # shortcuts, two program folders, and no way for either to know about the
+  # other. Keeping the old guid means the ordinary upgrade path recognises the
+  # previous version, runs its uninstaller, and only then installs this one.
+  #
+  # The value is the version 5 uuid of the 2.x appId, "BICO-Bulk Image Converter
+  # Tool", in the namespace electron-builder uses for this. It has to stay put
+  # from now on: changing it again would split the installations all over again.
+  guid: 0e5e6f40-7150-56ba-80f2-e37662c739b3
+  include: build/installer.nsh
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  allowElevation: true
+  createDesktopShortcut: always
+  createStartMenuShortcut: true
+  shortcutName: BICO
+  deleteAppDataOnUninstall: false
+  installerIcon: build/icon.ico
+  uninstallerIcon: build/icon.ico
+
+mac:
+  category: public.app-category.graphics-design
+  # electron-builder derives the icns from this 1024 square master, so no
+  # separate icns file has to be checked in.
+  icon: build/icon.png
+  artifactName: ${productName}-${version}-${arch}.${ext}
+  darkModeSupport: true
+  target:
+    - target: dmg
+      arch:
+        - x64
+        - arm64
+  entitlementsInherit: build/entitlements.mac.plist
+  extendInfo:
+    NSCameraUsageDescription: BICO does not use the camera.
+    NSMicrophoneUsageDescription: BICO does not use the microphone.
+  notarize: false
+
+dmg:
+  artifactName: ${productName}-${version}-${arch}.${ext}
+
+linux:
+  icon: build/icon.png
+  category: Graphics
+  synopsis: Bulk image converter and optimizer
+  description: Professional grade bulk image converter and optimizer with GPU accelerated processing.
+  desktop:
+    entry:
+      MimeType: image/jpeg;image/png;image/webp;image/avif;image/tiff;image/gif;
+  artifactName: ${productName}-${version}-${arch}.${ext}
+  target:
+    - AppImage
+    - deb
+    - rpm
+
+appImage:
+  artifactName: ${productName}-${version}-${arch}.${ext}
+
+publish:
+  provider: github
+  owner: shehari007
+  repo: BICO-bulk-image-converter-optimizer-tool
+  releaseType: release
